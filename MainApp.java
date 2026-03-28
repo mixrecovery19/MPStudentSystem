@@ -1,57 +1,57 @@
+import java.util.Scanner;
+
 public class MainApp {
-    
     public static void main(String[] args) {
-// even if I added the additional enrolment info into the last constructor it still works with the previous
-// constructors because of the overloading, and the default constructor is still there as well
-        Student newbie = new Student(1111111, "Mary", "Smith", "0404 115 113"); // default constructor
 
-        Student studentEnterer = new Student(
-            411012, "Michael", "Kalaf", "0404 115 114"
-        );
-        Student newbie2 = new Student(2222222, "Jane", "Doe", "0404 115 115" ); // default constructor
+        Scanner scanner = new Scanner(System.in);
 
-        Student studentEnrolled = new Student(1234567, "John", "Doe", "0404 115 116", true);
-        
-        Student domesticStudent = new DomesticStudent(1234567, "John", "Doe", "0404 115 116", true, "Queensland");
-        Student internationalStudent = new InternationalStudent(7654321, "Alice", "Johnson", "0404 115 117", true, "United States" );
-        Student[] students = new Student[6];
-        students[0] = newbie;
-        students[1] = studentEnterer;
-        students[2] = newbie2;
-        students[3] = studentEnrolled;
-        students[4] = domesticStudent;
-        students[5] = internationalStudent;
+        int id = 0;
+        while (true) {
+            try {
+                System.out.print("Enter ID: ");
+                id = scanner.nextInt();
+                scanner.nextLine();
+                break;
 
-        for (int i = 0; i < students.length; i++) {
-            System.out.println("---- Student " + (i + 1) + " ----");
-
-            System.out.println(students[i].toString());   // polymorphic
-            System.out.println("Fees: $" + students[i].calculateFees()); // polymorphic
-
-            System.out.println();
+            } catch (Exception e) {
+                System.out.println("Invalid ID. Try again.");
+                scanner.nextLine();
+            }
         }
 
-        System.out.println("Newbie: " + newbie.toString());
-        System.out.println();
-        System.out.println("Student Enterer: " + studentEnterer.toString());
-        System.out.println();
-        System.out.println("Newbie2: " + newbie2.toString());
-        System.out.println();
-        System.out.println("Student Enrolled: " + studentEnrolled.toString() + "\n");
-        System.out.println();
-        System.out.println("Domestic Student: " + domesticStudent.calculateFees() + "\n");
-        System.out.println("International Student: " + internationalStudent.calculateFees() + "\n");
-// ran a couple of versions of printing the data so I could see the difference between the constructors
+        System.out.print("Enter Given Name: ");
+        String givenName = scanner.nextLine();
 
-        printStudentInfoExactlyAsRequested(newbie);
-        printStudentInfoExactlyAsRequested(studentEnterer);
-        printStudentInfoExactlyAsRequested(newbie2);
-        printStudentInfoExactlyAsRequested(studentEnrolled);
-        printStudentInfoExactlyAsRequested(domesticStudent);
-        printStudentInfoExactlyAsRequested(internationalStudent);
+        System.out.print("Enter Family Name: ");
+        String familyName = scanner.nextLine();
+
+        System.out.print("Enter Phone (04XX XXX XXX): ");
+        String phone;
+
+            while (true) {
+                System.out.print("Enter Phone (format 04XX XXX XXX): ");
+                phone = scanner.nextLine();
+
+                if (phone.matches("04\\d{2} \\d{3} \\d{3}")) {
+                    break; // ✅ valid → exit loop
+                } else {
+                    System.out.println("Invalid phone format. Please use: 0412 123 123");
+                }
+            }
+
+        System.out.print("Is Enrolled? (true/false): ");
+        boolean isEnrolled = scanner.nextBoolean();
+
+        Student s = new Student(id, givenName, familyName, phone, isEnrolled);
+
+        System.out.println("\n--- Student Created ---");
+        System.out.println(s);
+
+       JsonStorage.saveStudent(s);
+       
+        scanner.close();
     }
-    // had already created a method to print the student info earlier and just called it something silly
-    // but specific.
+
 
        public static void printStudentInfoExactlyAsRequested(Student student) {
                 System.out.println("Student ID: S" + String.format("%07d", student.getId()));

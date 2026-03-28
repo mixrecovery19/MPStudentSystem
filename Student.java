@@ -106,5 +106,13 @@ class Student {
     public double calculateFees() {
         return 1500.00; // Placeholder value for fees calculation
     }
-
+    public String toJson() {
+        return "{"
+                + "\"id\":\"" + String.format("%07d", id) + "\","
+                + "\"givenName\":\"" + givenName + "\","
+                + "\"familyName\":\"" + familyName + "\","
+                + "\"phone\":\"" + phone + "\","
+                + "\"isEnrolled\":" + isEnrolled
+                + "}";
+    }
 }
