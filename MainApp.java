@@ -6,18 +6,18 @@ public class MainApp {
         Scanner scanner = new Scanner(System.in);
 
         int id = 0;
-        while (true) {
-            try {
-                System.out.print("Enter ID: ");
-                id = scanner.nextInt();
-                scanner.nextLine();
-                break;
+            while (true) {
+                try {
+                    System.out.print("Enter ID: ");
+                    id = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
 
-            } catch (Exception e) {
-                System.out.println("Invalid ID. Try again.");
-                scanner.nextLine();
+                } catch (Exception e) {
+                    System.out.println("Invalid ID. Try again.");
+                    scanner.nextLine();
+                }
             }
-        }
 
         System.out.print("Enter Given Name: ");
         String givenName = scanner.nextLine();
@@ -42,29 +42,36 @@ public class MainApp {
         System.out.print("Is Enrolled? (true/false): ");
         boolean isEnrolled = scanner.nextBoolean();
 
-        Student s = new Student(id, givenName, familyName, phone, isEnrolled);
+        System.out.print("Student Type (1 for Domestic, 2 for International): ");
+        int studentType = scanner.nextInt();
+        scanner.nextLine(); // Consume newline
 
-        System.out.println("\n--- Student Created ---");
-        System.out.println(s);
+        Student s;
 
-       JsonStorage.saveStudent(s);
+            if (studentType == 1) {
+                System.out.print("Enter state of residence: ");
+                String stateOfResidenceString = scanner.nextLine();
+
+                s = new DomesticStudent(id, givenName, familyName, phone, isEnrolled, stateOfResidenceString);
+
+            } else if (studentType == 2) {
+                System.out.print("Enter country of residence: ");
+                String countryOfResidenceString = scanner.nextLine();
+
+                s = new InternationalStudent(id, givenName, familyName, phone, isEnrolled, countryOfResidenceString);
+
+            } else {
+                System.out.println("Invalid student type.");
+                scanner.close();
+                return;
+            }
+
+            System.out.println("\n--- Student Created ---");
+            System.out.println(s);
+
+            JsonStorage.saveStudent(s);
+        
+            scanner.close();
+        }
        
-        scanner.close();
-    }
-
-
-       public static void printStudentInfoExactlyAsRequested(Student student) {
-                System.out.println("Student ID: S" + String.format("%07d", student.getId()));
-                System.out.println("Family Name: " + student.getFamilyName());
-                System.out.println("Given Name: " + student.getGivenName());
-                System.out.println("Phone: " + student.getPhone());
-
-                if (student.getIsEnrolled()) {
-                    System.out.println("Enrolment Status: Enrolled");
-                } else {
-                    System.out.println("Enrolment Status: Not Enrolled");
-                }
-                
-                    System.out.println("Fees: $" + student.calculateFees());
-                }
     }

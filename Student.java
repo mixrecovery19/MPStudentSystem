@@ -112,7 +112,16 @@ class Student {
                 + "\"givenName\":\"" + givenName + "\","
                 + "\"familyName\":\"" + familyName + "\","
                 + "\"phone\":\"" + phone + "\","
-                + "\"isEnrolled\":" + isEnrolled
+                + "\"isEnrolled\":" + isEnrolled + ","
+                + "\"fees\":" + calculateFees() + ","
+                + "\"Country\":\"" 
+                + (this instanceof InternationalStudent 
+                    ? ((InternationalStudent)this).getCountryOfResidence() 
+                    : "") + "\","
+                + "\"State\":\"" 
+                + (this instanceof DomesticStudent 
+                    ? ((DomesticStudent)this).stateOfResidence 
+                    : "") + "\""
                 + "}";
+        }
     }
-}
